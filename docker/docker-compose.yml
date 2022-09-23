@@ -2,11 +2,10 @@ version: "3"
 networks:
   # This network name has no significance. Rename it if you want.
   bcnet:
-#volumes:
-#  rgtestfiles:
-#    external: true
-#  rgtestdb:
-#    external: true
+volumes:
+  bc_db:
+  bc_logs:
+  bc_files:
 services:
   neo4j:
     # This is the version of Neo4j that this version of RG was tested against.
@@ -19,10 +18,8 @@ services:
       - "5051:7474"
       - "5052:7687"
     volumes:
-      # Local files are easier to back up, so that's how I roll on my personal workstation.
-      # Change this to whatever works best for you in production.
-      - /home/james/data/bellingcatcat/data:/data
-      - /home/james/data/bellingcatcat/neo4j_logs:/logs
+      - bc_db:/data
+      - bc_logs:/logs
     networks:
       - bcnet
     environment:
@@ -43,8 +40,7 @@ services:
     ports:
       - "5050:4950"
     volumes:
-      # As with the database, local files are easier to back up.
-      - /home/james/data/webcat-ng/files:/files
+      - bc_files:/files
     networks:
       - bcnet
     environment:
@@ -92,4 +88,4 @@ services:
       STATIC_PATH: "/static/"
       # For connecting to the Restagraph server
       RG_HOSTNAME: restagraph
-      RG_PORT: 4949
+      RG_PORT: 4950
