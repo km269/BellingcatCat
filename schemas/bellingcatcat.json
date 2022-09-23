@@ -227,6 +227,24 @@
       ]
     },
     {
+      "name": "Investigations",
+      "dependent": false,
+      "notes": "An investigation into something that happened.",
+      "attributes": [
+        {
+          "name": "Summary",
+          "description": "One-line summary of what this investigation is about.",
+          "type": "varchar",
+          "maxlength": 1024
+        },
+        {
+          "name": "Description",
+          "description": "Detailed description of the investigation.",
+          "type": "text"
+        }
+      ]
+    },
+    {
       "name": "Movements",
       "dependent": false,
       "notes": "Emergent phenomena that aren't connected/formal enough to be called an organisation.",
@@ -682,6 +700,30 @@
       "notes": null
     },
     {
+      "source-type": "Events",
+      "name": "ORGANISED_BY",
+      "target-type": "Organisations",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That organisation was involved in organising this event."
+    },
+    {
+      "source-type": "Events",
+      "name": "ORGANISED_BY",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That person was involved in organising this event."
+    },
+    {
+      "source-type": "Events",
+      "name": "SUBJECT_OF",
+      "target-type": "Investigations",
+      "cardinality": "1:many",
+      "reltype": "any",
+      "notes": "That investigation is about this specific event."
+    },
+    {
       "source-type": "Files",
       "name": "HAS_AUTHOR",
       "target-type": "People",
@@ -712,6 +754,38 @@
       "cardinality": "many:many",
       "reltype": "any",
       "notes": "That person took this photograph."
+    },
+    {
+      "source-type": "Files",
+      "name": "REFERENCE_FOR",
+      "target-type": "Investigations",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That investigation made some reference to this file."
+    },
+    {
+      "source-type": "Investigations",
+      "name": "HAS_SUBJECT",
+      "target-type": "Event",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": "This investigation is specifically about that one event."
+    },
+    {
+      "source-type": "Investigations",
+      "name": "PURSUED_BY",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This investigation was (or is being) pursued by that person."
+    },
+    {
+      "source-type": "Investigations",
+      "name": "REFERS_TO",
+      "target-type": "Files",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This investigation makes some kind of reference to that file."
     },
     {
       "source-type": "Places",
@@ -800,6 +874,14 @@
       "cardinality": "many:many",
       "reltype": "any",
       "notes": "E.g, this commercial landlord is a member of that VvE."
+    },
+    {
+      "source-type": "Organisations",
+      "name": "ORGANISED",
+      "target-type": "Events",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This organisation made that event happen."
     },
     {
       "source-type": "Organisations",
@@ -1107,6 +1189,14 @@
     },
     {
       "source-type": "People",
+      "name": "ORGANISED",
+      "target-type": "Events",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This person made that event happen."
+    },
+    {
+      "source-type": "People",
       "name": "OWNS",
       "target-type": "Models",
       "cardinality": "many:many",
@@ -1136,6 +1226,14 @@
       "cardinality": "many:many",
       "reltype": "any",
       "notes": "This person took that photograph."
+    },
+    {
+      "source-type": "People",
+      "name": "PURSUED",
+      "target-type": "Investigation",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This person pursued, or is currently pursuing, that investigation."
     },
     {
       "source-type": "People",
