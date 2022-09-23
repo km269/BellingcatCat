@@ -1,0 +1,1 @@
+./build-docker.sh && docker stack deploy -c docker-compose.yml bellingcatcat

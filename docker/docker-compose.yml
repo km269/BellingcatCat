@@ -1,0 +1,95 @@
+version: "3"
+networks:
+  # This network name has no significance. Rename it if you want.
+  bcnet:
+#volumes:
+#  rgtestfiles:
+#    external: true
+#  rgtestdb:
+#    external: true
+services:
+  neo4j:
+    # This is the version of Neo4j that this version of RG was tested against.
+    # Best to keep to the same major+minor version unless you have a strong reason
+    # and plenty of time on your hands for testing it all over again for yourself.
+    image: neo4j:4.3.9
+    deploy:
+      replicas: 1
+    ports:
+      - "5051:7474"
+      - "5052:7687"
+    volumes:
+      # Local files are easier to back up, so that's how I roll on my personal workstation.
+      # Change this to whatever works best for you in production.
+      - /home/james/data/bellingcatcat/data:/data
+      - /home/james/data/bellingcatcat/neo4j_logs:/logs
+    networks:
+      - bcnet
+    environment:
+      # CHANGE THE PASSWORD!!!
+      # Neo4j forces the use of the `neo4j` user, but you *need* to set this password to
+      # something that other people don't know.
+      # Then set NEO4J_PASSWORD to the same value, in the `restagraph` section.
+      # Why "wallaby"? I needed a password, and it's the first thing that came to mind.
+      NEO4J_AUTH: "neo4j/changeme"
+      # Prevent issues with stone-age assumptions about character-sets.
+      NEO4J_dbms_jvm_additional: "-Dfile.encoding=UTF-16"
+  restagraph:
+    image: equill/bellingcatcat:0.0.1
+    depends_on:
+      - neo4j # Tell Docker not to start RG until _after_ the db is already running
+    deploy:
+      replicas: 1 # You only want one while you're setting up.
+    ports:
+      - "5050:4950"
+    volumes:
+      # As with the database, local files are easier to back up.
+      - /home/james/data/webcat-ng/files:/files
+    networks:
+      - bcnet
+    environment:
+      # This app
+      FILES_LOCATION: "/files/" # Match this to the `volumes` config
+      # When files are uploaded, they're held in a temporary location while RG generates
+      # digest checksums and determines the filetype.
+      # Then they're deleted, so its size shouldn't be an issue unless you have a large
+      # volume of file uploads on your site.
+      FILES_TEMP_LOCATION: "/tmp/"
+      # Where to find the schema
+      SCHEMAPATH: "/schemas/bellingcatcat.json"
+      # Where to find the .tmpl files for, e.g, HTML-formatting schema output
+      TEMPLATE_PATH: "/templates/"
+      # Important note about addresses and port numbers:
+      # Restagraph doesn't care about them. Change them to whatever suits your environment.
+      LISTEN_ADDR: "0.0.0.0"
+      LISTEN_PORT: 4950
+      # For connecting to the Neo4j server.
+      # Obviously, they need to match the details in the neo4j section.
+      NEO4J_HOSTNAME: "neo4j"
+      #NEO4J_PORT: 7474  # The HTTP port on the Neo4j server.
+      NEO4J_PORT: 7687  # The Bolt port on the Neo4j server.
+      NEO4J_DBNAME: "neo4j"
+      NEO4J_USER: "neo4j"
+      NEO4J_PASSWORD: "changeme" # Match this to whatever you set in NEO4J_AUTH.
+      BOLT_AUTH_SCHEME: "basic"
+      # Uncomment the following line to enable debug-logging
+      #DEBUG: "true"
+  webcatgui:
+    image: equill/webcatgui:0.0.15b5
+    deploy:
+      replicas: 1
+    ports:
+      - "8086:8080"
+    networks:
+      - bcnet
+    depends_on:
+      # Not much point starting this until the other two are up
+      - neo4j
+      - restagraph
+    environment:
+      LISTEN_ADDR: '0.0.0.0'
+      LISTEN_PORT: 8080
+      STATIC_PATH: "/static/"
+      # For connecting to the Restagraph server
+      RG_HOSTNAME: restagraph
+      RG_PORT: 4949
