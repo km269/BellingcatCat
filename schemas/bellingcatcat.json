@@ -1,7 +1,1364 @@
 {
-  "name": "bellingcatcat",
+  "name": "webcat",
   "resourcetypes": [
+    {
+      "name": "Accounts",
+      "dependent": true,
+      "description": "An account on a site, or with a service. Could be a human user or a bot.",
+      "attributes": [
+        {
+          "name": "displayname",
+          "description": "As distinct from the login name/UID.",
+          "type": "varchar"
+        },
+        {
+          "name": "notes",
+          "description": "Notes about this account.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "Aliases",
+      "dependent": false,
+      "notes": "Another name by which someone or something is known.",
+      "attributes": [
+        {
+          "name": "description",
+          "description": "",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "Applications",
+      "dependent": false,
+      "notes": "Software applications",
+      "attributes": [
+        {
+          "name": "Notes",
+          "description": "Notes about the application",
+          "type": "text"
+        },
+        {
+          "name": "LicenseType",
+          "description": "What _general kind_ of license this application is available under: commercial or free/open-source.",
+          "type": "varchar",
+          "maxlength": 16,
+          "values": [
+            "Commercial",
+            "FOSS"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ApplicationCategories",
+      "dependent": false,
+      "notes": "Wiki, accounting, social media, etc. Independent of topic.",
+      "attributes": [
+        {
+          "name": "Notes",
+          "description": "Clarifying notes about the category.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "Books",
+      "dependent": false,
+      "notes": "Stuff printed on the corpses of trees.",
+      "attributes": [
+        {
+          "name": "description",
+          "description": "",
+          "type": "text"
+        },
+        {
+          "name": "ISBN",
+          "description": "International Standard Book Number. Should be a 10- or 13-digit number. Deprecated; use either ISBN10 or ISBN13",
+          "type": "varchar",
+          "maxlength": 17
+        },
+        {
+          "name": "ISBN10",
+          "description": "International Standard Book Number, 10-digit edition.",
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "name": "ISBN13",
+          "description": "International Standard Book Number, 13-digit edition",
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "name": "year",
+          "description": "The year in which it was first published.",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "name": "Brands",
+      "dependent": "false",
+      "notes": "Also known as ´make´.",
+      "attributes": [
+        {
+          "name": "description",
+          "description": "Comments about this particular brand.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "Buildings",
+      "dependent": "false",
+      "notes": "Individual buildings.",
+      "attributes": [
+        {
+          "name": "description",
+          "description": "",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "Cities",
+      "dependent": true,
+      "notes": "The geographic kind.",
+      "attributes": null
+    },
+    {
+      "name": "Comments",
+      "dependent": true,
+      "notes": "A comment on any object",
+      "attributes": [
+            {
+          "name": "text",
+          "description": "The text of the comment",
+          "type": "text",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Countries",
+      "dependent": "false",
+      "notes": "The geographic kind.",
+      "attributes": null
+    },
+    {
+      "name": "Definitions",
+      "dependent": false,
+      "notes": "Definition of a word, phrase, abbreviation or acronym.",
+      "attributes": [
+        {
+          "name": "description",
+          "description": "The actual definition goes here.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "EmailAddresses",
+      "dependent": true,
+      "notes": "",
+      "attributes": [
+        {
+          "name": "description",
+          "description": "Comments about this particular email address.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "Events",
+      "dependent": "false",
+      "notes": "Things that happened.",
+      "attributes": [
+        {
+          "name": "title",
+          "description": "",
+          "type": "varchar",
+          "maxlength": 512
+        },
+        {
+          "name": "description",
+          "description": "A little more information about the event.",
+          "type": "text"
+        },
+        {
+          "name": "start",
+          "description": "Starting date/time.",
+          "type": "varchar",
+          "maxlength": 24
+        },
+        {
+          "name": "end",
+          "description": "Ending date/time.",
+          "type": "varchar",
+          "maxlength": 24
+        }
+      ]
+    },
+    {
+      "name": "Floors",
+      "dependent": true,
+      "notes": "Floors within a building.",
+      "attributes": [
+        {
+          "name": "description",
+          "description": "",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "Howtos",
+      "dependent": false,
+      "notes": "Instructions for how to do something.",
+      "attributes": [
+        {
+          "name": "instructions",
+          "description": "How to do it.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "Movements",
+      "dependent": false,
+      "notes": "Emergent phenomena that aren't connected/formal enough to be called an organisation.",
+      "attributes": [
+        {
+          "name": "description",
+          "description": "",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "OrganisationCategories",
+      "dependent": false,
+      "notes": "Denote what _kind_ of organisation it is: recording studio, zoo, sports club, etc.",
+      "attributes": [
+        {
+          "name": "description",
+          "description": "Clarify exactly what I mean by this kind of org, to the extent there might be ambiguity.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "PhoneNumbers",
+      "dependent": "false",
+      "notes": "",
+      "attributes": [
+        {
+          "name": "description",
+          "description": "",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "Places",
+      "dependent": "false",
+      "notes": "The generic idea of a specific place, independent of its geographical location. E.g, an office or somebody's home.",
+      "attributes": [
+        {
+          "name": "description",
+          "description": "",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "PostboxAddresses",
+      "dependent": "false",
+      "notes": "The UID is the PO Box number.",
+      "attributes": null
+    },
+    {
+      "name": "Postcodes",
+      "dependent": "false",
+      "notes": "What else does this need?",
+      "attributes": null
+    },
+    {
+      "name": "Roles",
+      "dependent": true,
+      "notes": "Organisation roles. These are dependent because they exist only in the context of an organisation.",
+      "attributes": [
+        {
+          "name": "description",
+          "description": "The purpose of the role, and what it entails.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "States",
+      "dependent": true,
+      "notes": "The geographic kind.",
+      "attributes": null
+    },
+    {
+      "name": "StreetNumbers",
+      "dependent": true,
+      "notes": "The UID is the street number",
+      "attributes": [
+        {
+          "name": "floor",
+          "description": "",
+          "type": "integer"
+        },
+        {
+          "name": "name",
+          "description": "",
+          "type": "varchar"
+        }
+      ]
+    },
+    {
+      "name": "Streets",
+      "dependent": true,
+      "notes": "",
+      "attributes": null
+    },
+    {
+      "name": "Teams",
+      "dependent": true,
+      "notes": "Unit of organisation within an Organisation. You _could_ just use Organisations for this, but that way lie name-collisions.",
+      "attributes": [
+        {
+          "name": "FullName",
+          "description": "Long version of the team name, if there is one.",
+          "type": "varchar",
+          "maxlength": 256
+        },
+        {
+          "name": "Notes",
+          "description": "Notes about the team. Describing its purpose is especially useful.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "Topics",
+      "dependent": false,
+      "notes": "A specific subject, that things can be said to relate to.",
+      "attributes": [
+        {
+          "name": "Notes",
+          "description": "Elaborating notes about what this topic is and is not about.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "Websites",
+      "dependent": "false",
+      "notes": "",
+      "attributes": [
+        {
+          "name": "url",
+          "description": "",
+          "values": null
+        },
+        {
+          "name": "description",
+          "description": "",
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Wikipages",
+      "dependent": "false",
+      "notes": "generic wikipage",
+      "attributes": [
+        {
+          "name": "title",
+          "description": "In case you want to use something other than an escaped version of the UID",
+          "type": "varchar"
+        },
+        {
+          "name": "text",
+          "description": "The actual text of the page.",
+          "type": "text"
+        }
+      ]
+    }
   ],
   "relationships": [
+    {
+      "source-type": "any",
+      "name": "HAS_COMMENT",
+      "target-type": "Comments",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": "Comments can be added to anything."
+    },
+    {
+      "source-type": "Accounts",
+      "name": "BELONGS_TO",
+      "target-type": "Websites",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "ApplicationCategories",
+      "name": "INCLUDES",
+      "target-type": "Applications",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This category includes that application."
+    },
+    {
+      "source-type": "Applications",
+      "name": "BUILDS_ON",
+      "target-type": "Applications",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This app is built on top of that one's functionality. One app may be built on top of several others, and by their powers combined become some kind of giant super-app."
+    },
+    {
+      "source-type": "Applications",
+      "name": "DOCUMENTED_BY",
+      "target-type": "Wikipages",
+      "cardinality": "1:many",
+      "reltype": "any",
+      "notes": "Some aspect of this application is documented by that wikipage."
+    },
+    {
+      "source-type": "Applications",
+      "name": "IN_CATEGORY",
+      "target-type": "ApplicationCategories",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This application fits into that category."
+    },
+    {
+      "source-type": "Applications",
+      "name": "PRODUCED_BY",
+      "target-type": "Organisations",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": "That organisation is the current vendor and/or maintainer of this app."
+    },
+    {
+      "source-type": "Applications",
+      "name": "PRODUCED_BY",
+      "target-type": "People",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": "That person is the current maintainer of this app."
+    },
+    {
+      "source-type": "Applications",
+      "name": "PRODUCED_BY",
+      "target-type": "Teams",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This application is produced by that team in particular."
+    },
+    {
+      "source-type": "Websites",
+      "name": "ACCOUNTS",
+      "target-type": "Accounts",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": null
+    },
+    {
+      "source-type": "any",
+      "name": "RELATES_TO",
+      "target-type": "Files",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "any",
+      "name": "RELATES_TO",
+      "target-type": "Wikipages",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "any",
+      "name": "REFERS_TO",
+      "target-type": "Definitions",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Aliases",
+      "name": "ALIAS_FOR",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This alias has been associated with this person. Note that multiple people may use the same alias, whether coincidentally or intentionally."
+    },
+    {
+      "source-type": "Books",
+      "name": "AUTHOR",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "Link from the book to its author."
+    },
+    {
+      "source-type": "Books",
+      "name": "ALSO_PUBLISHED_AS",
+      "target-type": "Aliases",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Books",
+      "name": "PUBLISHED_BY",
+      "target-type": "Organisations",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": "This book was published by that organisation."
+    },
+    {
+      "source-type": "Books",
+      "name": "RECOMMENDED_BY",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This person thought that book would be worth reading or consulting."
+    },
+    {
+      "source-type": "Brands",
+      "name": "PRODUCES",
+      "target-type": "Models",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": null
+    },
+    {
+      "source-type": "Brands",
+      "name": "VENDOR",
+      "target-type": "Organisations",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Buildings",
+      "name": "ADDRESS",
+      "target-type": "StreetNumbers",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Buildings",
+      "name": "FLOORS",
+      "target-type": "Floors",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": null
+    },
+    {
+      "source-type": "Buildings",
+      "name": "LOCATION",
+      "target-type": "Countries",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Buildings",
+      "name": "LOCATION",
+      "target-type": "States",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Buildings",
+      "name": "LOCATION",
+      "target-type": "Cities",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Cities",
+      "name": "POSTCODES",
+      "target-type": "Postcodes",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": null
+    },
+    {
+      "source-type": "Cities",
+      "name": "STREETS",
+      "target-type": "Streets",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": null
+    },
+    {
+      "source-type": "Cities",
+      "name": "VENUE_FOR",
+      "target-type": "Organisations",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That organisation is known to operate in this city, regardless of any presence there. Inverse relationship for OPERATES_IN."
+    },
+    {
+      "source-type": "Cities",
+      "name": "VENUE_FOR",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That person is known to operate in this city, regardless of whether they live there. Inverse relationship for OPERATES_IN."
+    },
+    {
+      "source-type": "Countries",
+      "name": "CITIES",
+      "target-type": "Cities",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": null
+    },
+    {
+      "source-type": "Countries",
+      "name": "POSTCODES",
+      "target-type": "Postcodes",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": null
+    },
+    {
+      "source-type": "Countries",
+      "name": "STATES",
+      "target-type": "States",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": null
+    },
+    {
+      "source-type": "Countries",
+      "name": "VENUE_FOR",
+      "target-type": "Organisations",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That organisation is known to operate in this country, regardless of any presence there. Inverse relationship for OPERATES_IN."
+    },
+    {
+      "source-type": "Countries",
+      "name": "VENUE_FOR",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That person is known to operate in this country, regardless of whether they live there. Inverse relationship for OPERATES_IN."
+    },
+    {
+      "source-type": "Events",
+      "name": "INVOLVES",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Events",
+      "name": "LOCATION",
+      "target-type": "Places",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Files",
+      "name": "HAS_AUTHOR",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That person wrote the content in this file."
+    },
+    {
+      "source-type": "Files",
+      "name": "DRAWN_BY",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That person drew this picture."
+    },
+    {
+      "source-type": "Files",
+      "name": "HAS_SUBJECT",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That person is a subject of this (presumably image) file."
+    },
+    {
+      "source-type": "Files",
+      "name": "PHOTOGRAPHED_BY",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That person took this photograph."
+    },
+    {
+      "source-type": "Places",
+      "name": "HOSTED",
+      "target-type": "Events",
+      "cardinality": "many:many",
+      "dependent": false,
+      "notes": "That event was hosted in this place."
+    },
+    {
+      "source-type": "ModelVersions",
+      "name": "COMPATIBLE_WITH",
+      "target-type": "ModelVersions",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Movements",
+      "name": "ASSOCIATED_WITH",
+      "target-type": "Movements",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "Uncomfortably vague, so should be used only where the relationship is not clear."
+    },
+    {
+      "source-type": "Movements",
+      "name": "ASSOCIATED_WITH",
+      "target-type": "Organisations",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "Uncomfortably vague, so should be used only where the relationship is not clear."
+    },
+    {
+      "source-type": "Movements",
+      "name": "ASSOCIATED_WITH",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "Uncomfortably vague, so should be used only where the relationship is not clear."
+    },
+    {
+      "source-type": "OrganisationCategories",
+      "name": "INCLUDES",
+      "target-type": "Organisations",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "Cardinality is many:many because it's plausible that one org fits multiple categories."
+    },
+    {
+      "source-type": "Organisations",
+      "name": "CONTACT_METHODS",
+      "target-type": "EmailAddresses",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": null
+    },
+    {
+      "source-type": "Organisations",
+      "name": "CONTACT_METHODS",
+      "target-type": "PhoneNumbers",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": null
+    },
+    {
+      "source-type": "Organisations",
+      "name": "INCLUDES",
+      "target-type": "Teams",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": "That team is a member of this organisation."
+    },
+    {
+      "source-type": "Organisations",
+      "name": "HAS_MEMBERS",
+      "target-type": "Organisations",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "E.g, that commercial landlord is a member of this VvE."
+    },
+    {
+      "source-type": "Organisations",
+      "name": "MEMBER_OF",
+      "target-type": "Organisations",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "E.g, this commercial landlord is a member of that VvE."
+    },
+    {
+      "source-type": "Organisations",
+      "name": "ROLES",
+      "target-type": "Roles",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": null
+    },
+    {
+      "source-type": "Organisations",
+      "name": "PUBLISHED",
+      "target-type": "Books",
+      "cardinality": "1:many",
+      "reltype": "any",
+      "notes": "This organisation published that book."
+    },
+    {
+      "source-type": "Organisations",
+      "name": "HAS_SUBSIDIARY",
+      "target-type": "Organisations",
+      "cardinality": "1:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Organisations",
+      "name": "OPERATES_IN",
+      "target-type": "Countries",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This organisation is known to do business or otherwise actively do stuff in this country, regardless of any presence there. Inverse relationship for VENUE_FOR."
+    },
+    {
+      "source-type": "Organisations",
+      "name": "OPERATES_IN",
+      "target-type": "States",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This organisation is known to do business or otherwise actively do stuff in this state, regardless of any presence there. Inverse relationship for VENUE_FOR."
+    },
+    {
+      "source-type": "Organisations",
+      "name": "OPERATES_IN",
+      "target-type": "Cities",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This organisation is known to do business or otherwise actively do stuff in this city, regardless of any presence there. Inverse relationship for VENUE_FOR."
+    },
+    {
+      "source-type": "Organisations",
+      "name": "SUBSIDIARY_OF",
+      "target-type": "Organisations",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Organisations",
+      "name": "TYPE",
+      "target-type": "OrganisationCategories",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This org is of that type/those types."
+    },
+    {
+      "source-type": "Organisations",
+      "name": "WEBSITES",
+      "target-type": "Websites",
+      "cardinality": "1:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Organisations",
+      "name": "ASSOCIATED_WITH",
+      "target-type": "Movements",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "Uncomfortably vague, so should be used only where the relationship is not clear."
+    },
+    {
+      "source-type": "Organisations",
+      "name": "ASSOCIATED_WITH",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "Uncomfortably vague, so should be used only where the relationship is not clear."
+    },
+    {
+      "source-type": "Organisations",
+      "name": "ASSOCIATED_WITH",
+      "target-type": "Organisations",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "Uncomfortably vague, so should be used only where the relationship is not clear."
+    },
+    {
+      "source-type": "Organisations",
+      "name": "PRODUCES",
+      "target-type": "Applications",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This organisation sells and/or maintains that application."
+    },
+    {
+      "source-type": "People",
+      "name": "ASSOCIATED_WITH",
+      "target-type": "Movements",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "Uncomfortably vague, so should be used only where the relationship is not clear."
+    },
+    {
+      "source-type": "People",
+      "name": "ASSOCIATED_WITH",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "Uncomfortably vague, so should be used only where the relationship is not clear."
+    },
+    {
+      "source-type": "People",
+      "name": "ASSOCIATED_WITH",
+      "target-type": "Organisations",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "Uncomfortably vague, so should be used only where the relationship is not clear."
+    },
+    {
+      "source-type": "People",
+      "name": "MEMBER_OF",
+      "target-type": "Teams",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This person is a member of that team, and possibly of others."
+    },
+    {
+      "source-type": "People",
+      "name": "PRODUCES",
+      "target-type": "Applications",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This person maintains that application."
+    },
+    {
+      "source-type": "People",
+      "name": "AUTHOR_OF",
+      "target-type": "Books",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "Link to a book this person wrote."
+    },
+    {
+      "source-type": "People",
+      "name": "ADDRESSES",
+      "target-type": "StreetNumbers",
+      "cardinality": "1:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "AKA",
+      "target-type": "Aliases",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "ATTENDED",
+      "target-type": "Events",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "AUNT_OF",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "CHILD_OF",
+      "target-type": "People",
+      "cardinality": "1:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "CONTACT_METHODS",
+      "target-type": "EmailAddresses",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": "An email address at which you can reach this person."
+    },
+    {
+      "source-type": "People",
+      "name": "CONTACT_METHODS",
+      "target-type": "PhoneNumbers",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": "A phone number at which you can reach this person."
+    },
+    {
+      "source-type": "People",
+      "name": "COUSIN",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "DISLIKES",
+      "target-type": "any",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "AUTHOR_OF",
+      "target-type": "Files",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This person wrote the content in this file."
+    },
+    {
+      "source-type": "People",
+      "name": "DREW",
+      "target-type": "Files",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This person drew that picture."
+    },
+    {
+      "source-type": "People",
+      "name": "FRIEND",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "LIKES",
+      "target-type": "any",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "MARRIED_TO",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "NEICE_OF",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "NEPHEW_OF",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "OPERATES_IN",
+      "target-type": "Countries",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This person is known to do business or otherwise actively do stuff in this country, regardless of whether they actually live there. Inverse relationship for VENUE_FOR."
+    },
+    {
+      "source-type": "People",
+      "name": "OPERATES_IN",
+      "target-type": "States",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This person is known to do business or otherwise actively do stuff in this state, regardless of whether they actually live there. Inverse relationship for VENUE_FOR."
+    },
+    {
+      "source-type": "People",
+      "name": "OPERATES_IN",
+      "target-type": "Cities",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This person is known to do business or otherwise actively do stuff in this city, regardless of whether they actually live there. Inverse relationship for VENUE_FOR."
+    },
+    {
+      "source-type": "People",
+      "name": "OWNS",
+      "target-type": "Models",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "PARENT_OF",
+      "target-type": "People",
+      "cardinality": "1:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "PARTNER",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "PHOTOGRAPHED",
+      "target-type": "Files",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This person took that photograph."
+    },
+    {
+      "source-type": "People",
+      "name": "RECOMMENDED",
+      "target-type": "Books",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This person recommended that book."
+    },
+    {
+      "source-type": "People",
+      "name": "RELATED_TO",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "SIBLING",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "SUBJECT_OF",
+      "target-type": "Files",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This person is a subject of that (presumably image) file."
+    },
+    {
+      "source-type": "People",
+      "name": "UNCLE_OF",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "VISITED",
+      "target-type": "Places",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Places",
+      "name": "LOCATIONS",
+      "target-type": "StreetNumbers",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Places",
+      "name": "LOCATIONS",
+      "target-type": "Streets",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Places",
+      "name": "LOCATIONS",
+      "target-type": "Cities",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Places",
+      "name": "LOCATIONS",
+      "target-type": "States",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Places",
+      "name": "LOCATIONS",
+      "target-type": "Countries",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "PostboxAddresses",
+      "name": "POSTCODES",
+      "target-type": "Postcodes",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "States",
+      "name": "CITIES",
+      "target-type": "Cities",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": null
+    },
+    {
+      "source-type": "States",
+      "name": "POSTCODES",
+      "target-type": "Postcodes",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": null
+    },
+    {
+      "source-type": "States",
+      "name": "VENUE_FOR",
+      "target-type": "Organisations",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That organisation is known to operate in this state, regardless of any presence there. Inverse relationship for OPERATES_IN."
+    },
+    {
+      "source-type": "States",
+      "name": "VENUE_FOR",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That person is known to operate in this state, regardless of whether they live there. Inverse relationship for OPERATES_IN."
+    },
+    {
+      "source-type": "StreetNumbers",
+      "name": "POSTCODES",
+      "target-type": "Postcodes",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Streets",
+      "name": "STREET_NUMBERS",
+      "target-type": "StreetNumbers",
+      "cardinality": "1:many",
+      "reltype": "dependent",
+      "notes": null
+    },
+    {
+      "source-type": "Teams",
+      "name": "MEMBER_OF",
+      "target-type": "Organisations",
+      "cardinality": "many:1",
+      "reltype": "dependent",
+      "notes": "This team is a member of that organisation."
+    },
+    {
+      "source-type": "Teams",
+      "name": "HAS_MEMBER",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That person is a member of this team, and possibly also of others."
+    },
+    {
+      "source-type": "Teams",
+      "name": "HAS_SUBTEAM",
+      "target-type": "Teams",
+      "cardinality": "many:many",
+      "reltype": "dependent",
+      "notes": "That team is a subteam of this one, and possibly of others."
+    },
+    {
+      "source-type": "Teams",
+      "name": "PRODUCES",
+      "target-type": "Applications",
+      "cardinality": "1:many",
+      "reltype": "any",
+      "notes": "This team in in particular is responsible for maintaining that application."
+    },
+    {
+      "source-type": "Teams",
+      "name": "SUBTEAM_OF",
+      "target-type": "Teams",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This team is a subteam of that one, and possibly of others."
+    },
+    {
+      "source-type": "any",
+      "name": "RELATES_TO",
+      "target-type": "Topics",
+      "cardinality": "many:many",
+      "notes": "This thing pertains to that topic."
+    },
+    {
+      "source-type": "Topics",
+      "name": "SUBJECT_OF",
+      "target-type": "any",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This is the topic of that thing over there."
+    },
+    {
+      "source-type": "Wikipages",
+      "name": "DOCUMENTS",
+      "target-type": "Applications",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": "This wikipage documents some aspect of that application."
+    },
+    {
+      "source-type": "Wikipages",
+      "name": "RELATES_TO",
+      "target-type": "any",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Wikipages",
+      "name": "REFERS_TO",
+      "target-type": "Books",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This wikipage refers to that book in some way."
+    }
   ]
 }
