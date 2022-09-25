@@ -484,6 +484,14 @@
       "notes": "This application is produced by that team in particular."
     },
     {
+      "source-type": "Applications",
+      "name": "SUPPORTS",
+      "target-type": "Applications",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This application is what that other one is built on top of."
+    },
+    {
       "source-type": "Websites",
       "name": "ACCOUNTS",
       "target-type": "Accounts",
@@ -630,6 +638,14 @@
     {
       "source-type": "Cities",
       "name": "VENUE_FOR",
+      "target-type": "Events",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That event was reported to occur in this city."
+    },
+    {
+      "source-type": "Cities",
+      "name": "VENUE_FOR",
       "target-type": "Organisations",
       "cardinality": "many:many",
       "reltype": "any",
@@ -670,6 +686,14 @@
     {
       "source-type": "Countries",
       "name": "VENUE_FOR",
+      "target-type": "Events",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That event was reported to occur in this country."
+    },
+    {
+      "source-type": "Countries",
+      "name": "VENUE_FOR",
       "target-type": "Organisations",
       "cardinality": "many:many",
       "reltype": "any",
@@ -685,8 +709,40 @@
     },
     {
       "source-type": "Events",
-      "name": "INVOLVES",
+      "name": "HAS_SUBJECT",
       "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This event happened to or for that person."
+    },
+    {
+      "source-type": "Events",
+      "name": "INVOLVED",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That person participated in this event."
+    },
+    {
+      "source-type": "Events",
+      "name": "LOCATION",
+      "target-type": "Countries",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Events",
+      "name": "LOCATION",
+      "target-type": "States",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": null
+    },
+    {
+      "source-type": "Events",
+      "name": "LOCATION",
+      "target-type": "Cities",
       "cardinality": "many:many",
       "reltype": "any",
       "notes": null
@@ -766,10 +822,26 @@
     {
       "source-type": "Investigations",
       "name": "HAS_SUBJECT",
-      "target-type": "Event",
+      "target-type": "Events",
       "cardinality": "many:1",
       "reltype": "any",
       "notes": "This investigation is specifically about that one event."
+    },
+    {
+      "source-type": "Investigations",
+      "name": "HAS_SUBJECT",
+      "target-type": "Aliases",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": "A person using that alias is a focus of this investigation."
+    },
+    {
+      "source-type": "Investigations",
+      "name": "HAS_SUBJECT",
+      "target-type": "People",
+      "cardinality": "many:1",
+      "reltype": "any",
+      "notes": "That person is a focus of this investigation."
     },
     {
       "source-type": "Investigations",
@@ -1013,6 +1085,14 @@
     },
     {
       "source-type": "People",
+      "name": "BUSINESS_PARTNER",
+      "target-type": "People",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "These people are (or were) business partners."
+    },
+    {
+      "source-type": "People",
       "name": "MEMBER_OF",
       "target-type": "Teams",
       "cardinality": "many:many",
@@ -1133,6 +1213,14 @@
     },
     {
       "source-type": "People",
+      "name": "INVOLVED_IN",
+      "target-type": "Events",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This person participated in that event."
+    },
+    {
+      "source-type": "People",
       "name": "LIKES",
       "target-type": "any",
       "cardinality": "many:many",
@@ -1230,7 +1318,7 @@
     {
       "source-type": "People",
       "name": "PURSUED",
-      "target-type": "Investigation",
+      "target-type": "Investigations",
       "cardinality": "many:many",
       "reltype": "any",
       "notes": "This person pursued, or is currently pursuing, that investigation."
@@ -1258,6 +1346,30 @@
       "cardinality": "many:many",
       "reltype": "any",
       "notes": null
+    },
+    {
+      "source-type": "People",
+      "name": "SUBJECT_OF",
+      "target-type": "Events",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That event happened to or for this person."
+    },
+    {
+      "source-type": "Aliases",
+      "name": "SUBJECT_OF",
+      "target-type": "Investigations",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "A person using this alias is a focus of that investigation."
+    },
+    {
+      "source-type": "People",
+      "name": "SUBJECT_OF",
+      "target-type": "Investigations",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "This person is a focus of that investigation."
     },
     {
       "source-type": "People",
@@ -1346,6 +1458,14 @@
       "cardinality": "1:many",
       "reltype": "dependent",
       "notes": null
+    },
+    {
+      "source-type": "States",
+      "name": "VENUE_FOR",
+      "target-type": "Events",
+      "cardinality": "many:many",
+      "reltype": "any",
+      "notes": "That event was reported to occur in this state."
     },
     {
       "source-type": "States",
